@@ -19,7 +19,7 @@ jobs:
         run: docker build -t note-keeping-app:latest .
         
       - name: Tag Docker image
-        run: docker tag note-keeping-app:latest <aws-account-id>	188401947203.dkr.ecr.us-east-1.amazonaws.com/note_keeping_app:latest
+        run: docker tag note-keeping-app:latest	188401947203.dkr.ecr.us-east-1.amazonaws.com/note_keeping_app:latest
         
       - name: Push Docker image to Amazon ECR
         run: docker push 	188401947203.dkr.ecr.us-east-1.amazonaws.com/note-keeping-app:latest
