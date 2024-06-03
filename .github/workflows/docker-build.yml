@@ -48,6 +48,13 @@ jobs:
         with:
           version: 'v1.21.0'
 
-      - name: Update Kubernetes deployment
+      - name: Create kubeconfig file
+        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Install Helm
         run: |
-          kubectl set image deployment/note-keeping-app note-keeping-app=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/note-keeping-app:latest
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Deploy to Kubernetes using Helm
+        run: |
+          helm upgrade --install note-keeping-app ./helm/note-keeping-app --namespace default --set image.repository=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/note-keeping-app --set image.tag=latest
