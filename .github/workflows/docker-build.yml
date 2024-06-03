@@ -1,0 +1,25 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        run: docker build -t note-keeping-app:latest .
+        
+      - name: Tag Docker image
+        run: docker tag note-keeping-app:latest <aws-account-id>	188401947203.dkr.ecr.us-east-1.amazonaws.com/note_keeping_app:latest
+        
+      - name: Push Docker image to Amazon ECR
+        run: docker push 	188401947203.dkr.ecr.us-east-1.amazonaws.com/note-keeping-app:latest
